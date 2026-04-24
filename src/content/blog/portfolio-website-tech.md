@@ -1,7 +1,7 @@
 ---
 title: "个人作品集网站技术实现"
 description: "从零构建一个现代化的个人作品集网站，使用 Astro、React、Tailwind CSS 等技术栈。"
-date: 2026-04-25
+pubDate: 2026-04-25
 lang: "zh"
 tags: ["前端", "Astro", "React", "Tailwind CSS"]
 ---
