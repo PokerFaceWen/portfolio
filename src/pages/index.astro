@@ -1,17 +1,116 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/icons/Icon.astro';
+import { SITE } from '../config';
+import { getCollection } from 'astro:content';
 
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
+const blogPosts = await getCollection('blog');
+const projects = await getCollection('projects');
+
+const recentPosts = blogPosts
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .slice(0, 3);
+
+const recentProjects = projects
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .slice(0, 3);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title={SITE.title} description={SITE.description}>
+  <div class="max-w-prose mx-auto">
+    <section class="mb-16 animate-slide-enter">
+      <div class="mb-2 text-sm font-mono opacity-40 tracking-wider">HELLO, I'M</div>
+      <h1 class="text-5xl md:text-6xl font-bold font-condensed tracking-tight mb-6">
+        PokerFaceWen
+      </h1>
+      <p class="text-lg leading-8 opacity-70 max-w-lg">
+        A passionate developer who loves building things for the web.
+        Exploring technologies, writing code, and sharing what I learn.
+      </p>
+      <div class="flex items-center gap-5 mt-8">
+        {SITE.social.map((item) => (
+          <a
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={item.name}
+            class="opacity-40 hover:opacity-100 transition-opacity duration-200 text-xl"
+          >
+            <Icon name={item.icon.toLowerCase()} />
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="mb-16 animate-slide-enter" style="animation-delay: 100ms;">
+      <div class="flex items-baseline justify-between mb-5">
+        <h2 class="text-xl font-bold font-condensed opacity-60">Recent Posts</h2>
+        <a href={`${base}blog`} class="text-sm opacity-40 hover:opacity-100 transition-opacity duration-200 no-underline!">
+          View all &rarr;
+        </a>
+      </div>
+      <div class="divide-y divide-gray-200 dark:divide-gray-800">
+        {recentPosts.map((post) => {
+          const formattedDate = post.data.pubDate.toLocaleDateString(post.data.lang === 'zh' ? 'zh-CN' : 'en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+          });
+          return (
+            <a
+              href={`${base}blog/${post.id}`}
+              class="block py-3 group no-underline! transition-opacity duration-200 opacity-70 hover:opacity-100"
+            >
+              <div class="flex items-baseline gap-3">
+                <span class="text-sm opacity-40 font-mono shrink-0">{formattedDate}</span>
+                <span class="group-hover:text-blue-500 transition-colors duration-200">{post.data.title}</span>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+
+    <section class="mb-16 animate-slide-enter" style="animation-delay: 200ms;">
+      <div class="flex items-baseline justify-between mb-5">
+        <h2 class="text-xl font-bold font-condensed opacity-60">Projects</h2>
+        <a href={`${base}projects`} class="text-sm opacity-40 hover:opacity-100 transition-opacity duration-200 no-underline!">
+          View all &rarr;
+        </a>
+      </div>
+      <div class="grid gap-3">
+        {recentProjects.map((project) => (
+          <a
+            href={`${base}projects/${project.id}`}
+            class="block p-4 rounded-lg border border-gray-200 dark:border-gray-800 hover:border-blue-500/40 transition-all duration-200 no-underline! opacity-80 hover:opacity-100 group"
+          >
+            <div class="flex items-center justify-between">
+              <h3 class="font-semibold group-hover:text-blue-500 transition-colors duration-200">{project.data.title}</h3>
+              {project.data.github && (
+                <span class="opacity-30">
+                  <Icon name="github" class="text-lg" />
+                </span>
+              )}
+            </div>
+            <p class="text-sm opacity-50 mt-1 leading-6">{project.data.description}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="animate-slide-enter" style="animation-delay: 300ms;">
+      <div class="flex items-baseline justify-between mb-5">
+        <h2 class="text-xl font-bold font-condensed opacity-60">About</h2>
+        <a href={`${base}about`} class="text-sm opacity-40 hover:opacity-100 transition-opacity duration-200 no-underline!">
+          Read more &rarr;
+        </a>
+      </div>
+      <p class="opacity-50 leading-7">
+        I enjoy exploring new technologies, solving problems, and sharing what I learn with the community.
+        This site is where I document my journey.
+      </p>
+    </section>
+  </div>
+</BaseLayout>

@@ -1,0 +1,242 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'DM Mono', Menlo, Monaco, Consolas, monospace;
+  --font-condensed: 'Roboto Condensed', sans-serif;
+
+  --max-width-prose: 65ch;
+
+  --animate-slide-enter: slide-enter 0.6s ease-out both;
+
+  @keyframes slide-enter {
+    0% { transform: translateY(20px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+}
+
+@layer base {
+  :root {
+    --color-base: 0 0 0;
+    --color-bg: 255 255 255;
+  }
+
+  .dark {
+    --color-base: 255 255 255;
+    --color-bg: 0 0 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    position: relative;
+  }
+
+  html::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: -10;
+    background: radial-gradient(
+        circle at 15% 20%,
+        rgba(147, 197, 253, 0.25) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 85% 30%,
+        rgba(196, 181, 253, 0.2) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 50% 80%,
+        rgba(110, 231, 183, 0.18) 0%,
+        transparent 50%
+      );
+    background-attachment: fixed;
+  }
+
+  .dark html::before {
+    background: radial-gradient(
+        circle at 15% 20%,
+        rgba(59, 130, 246, 0.15) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 85% 30%,
+        rgba(139, 92, 246, 0.12) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 50% 80%,
+        rgba(16, 185, 129, 0.1) 0%,
+        transparent 50%
+      );
+  }
+
+  body {
+    background-color: rgb(var(--color-bg));
+    color: rgb(var(--color-base));
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  a {
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+  a:hover {
+    opacity: 1;
+  }
+
+  ::selection {
+    background-color: rgb(59 130 246 / 0.2);
+  }
+}
+
+@layer components {
+  .prose-custom {
+    max-width: var(--max-width-prose);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .prose-custom h1 {
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose-custom h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .prose-custom h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .prose-custom p {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    line-height: 1.75;
+  }
+
+  .prose-custom a {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    opacity: 1;
+  }
+  .prose-custom a:hover {
+    color: rgb(59 130 246);
+  }
+
+  .prose-custom code {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    background-color: rgb(243 244 246);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+  }
+  .dark .prose-custom code {
+    background-color: rgb(31 41 55);
+  }
+
+  .prose-custom pre {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+  }
+
+  .prose-custom pre code {
+    background-color: transparent;
+    padding: 0;
+  }
+
+  .prose-custom ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose-custom ol {
+    list-style-type: decimal;
+    padding-left: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose-custom li {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    line-height: 1.75;
+  }
+
+  .prose-custom blockquote {
+    border-left: 3px solid rgb(209 213 219);
+    padding-left: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+  }
+  .dark .prose-custom blockquote {
+    border-left-color: rgb(55 65 81);
+  }
+
+  .prose-custom img {
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose-custom hr {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    border-color: rgb(229 231 235);
+  }
+  .dark .prose-custom hr {
+    border-color: rgb(31 41 55);
+  }
+
+  .prose-custom table {
+    width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose-custom th {
+    text-align: left;
+    font-weight: 700;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    border-bottom: 1px solid rgb(229 231 235);
+  }
+  .dark .prose-custom th {
+    border-bottom-color: rgb(31 41 55);
+  }
+
+  .prose-custom td {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    border-bottom: 1px solid rgb(229 231 235);
+  }
+  .dark .prose-custom td {
+    border-bottom-color: rgb(31 41 55);
+  }
+}

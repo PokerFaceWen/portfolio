@@ -1,0 +1,44 @@
+---
+import BlogItem from './BlogItem.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  posts: CollectionEntry<'blog'>[];
+}
+
+const { posts } = Astro.props;
+
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
+
+const sorted = posts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+const grouped = sorted.reduce<Record<number, CollectionEntry<'blog'>[]>>((acc, post) => {
+  const year = post.data.pubDate.getFullYear();
+  if (!acc[year]) acc[year] = [];
+  acc[year].push(post);
+  return acc;
+}, {});
+
+const years = Object.keys(grouped).map(Number).sort((a, b) => b - a);
+---
+
+<div class="max-w-prose mx-auto animate-slide-enter">
+  {years.map((year) => (
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold font-condensed opacity-50 mb-2">{year}</h2>
+      <div class="divide-y divide-gray-200 dark:divide-gray-800">
+        {grouped[year].map((post) => (
+          <BlogItem
+            title={post.data.title}
+            href={`${base}blog/${post.id}`}
+            date={post.data.pubDate}
+            readingTime={post.data.readingTime}
+            lang={post.data.lang}
+            tags={post.data.tags}
+          />
+        ))}
+      </div>
+    </div>
+  ))}
+</div>

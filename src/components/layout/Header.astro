@@ -1,0 +1,44 @@
+---
+import Icon from '../icons/Icon.astro';
+import ThemeToggle from '../ui/ThemeToggle.tsx';
+import { SITE } from '../../config';
+
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
+const currentPath = Astro.url.pathname;
+---
+
+<header class="z-40">
+  <nav class="px-8 py-6 w-full flex items-center justify-between box-border">
+    <div class="w-6" />
+    <div class="flex items-center gap-4">
+      <a href={base} class="opacity-60 hover:opacity-100 transition-opacity duration-200" title="Home">
+        <Icon name="home" class="text-xl" />
+      </a>
+      {SITE.nav.map((item) => (
+        <a
+          href={item.path}
+          class:list={[
+            'no-underline! transition-opacity duration-200',
+            currentPath.includes(item.path) ? 'opacity-100!' : 'opacity-60 hover:opacity-100',
+          ]}
+          title={item.name}
+        >
+          <Icon name={item.icon} class="text-xl" />
+        </a>
+      ))}
+      {SITE.social.map((item) => (
+        <a
+          href={item.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={item.name}
+          class="opacity-60 hover:opacity-100 transition-opacity duration-200"
+        >
+          <Icon name={item.icon.toLowerCase()} class="text-xl" />
+        </a>
+      ))}
+    </div>
+    <ThemeToggle client:load />
+  </nav>
+</header>
