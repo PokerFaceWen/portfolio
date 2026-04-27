@@ -38,7 +38,7 @@ case "$ENV" in
     "production")
         log "部署到阿里云生产环境 (vincentbuilds.fun)"
         export ASTRO_ENV=production
-        REMOTE_PATH="/www/wwwroot/vincentbuilds.fun"
+        REMOTE_PATH="/var/www/vincentbuilds"
         ;;
     "github")
         log "部署到 GitHub Pages (pokerfacewen.github.io/portfolio)"
@@ -103,8 +103,8 @@ case "$ENV" in
             SSH_OPTIONS=""
         fi
         
-        # 执行rsync同步
-        rsync -avz --delete -e "ssh $SSH_OPTIONS" "$BUILD_DIR/" "$ALIYUN_SERVER_USER@$ALIYUN_SERVER_HOST:$REMOTE_PATH/"
+        # 执行scp同步
+        scp -r -o StrictHostKeyChecking=no "$BUILD_DIR/"* "$ALIYUN_SERVER_USER@$ALIYUN_SERVER_HOST:$REMOTE_PATH/"
         
         if [ $? -eq 0 ]; then
             log "阿里云部署完成"
