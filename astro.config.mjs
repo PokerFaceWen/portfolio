@@ -6,8 +6,7 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://pokerfacewen.github.io',
-  base: '/portfolio',
+  site: 'https://vincentbuilds.fun',
   output: 'static',
   devToolbar: { enabled: false },
   integrations: [

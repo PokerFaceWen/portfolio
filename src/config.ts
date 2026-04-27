@@ -2,9 +2,9 @@ const rawBase = import.meta.env.BASE_URL;
 const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
 
 export const SITE = {
-  title: "PokerFaceWen",
-  description: "A fanatical open sourceror and design engineer.",
-  author: "PokerFaceWen",
+  title: "Vincent Hu",
+  description: "A passionate developer who loves building things for the web.",
+  author: "Vincent Hu",
   email: "17889786156@163.com",
   github: "https://github.com/PokerFaceWen",
   nav: [
