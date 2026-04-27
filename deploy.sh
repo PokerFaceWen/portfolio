@@ -2,12 +2,18 @@
 
 # 多环境部署脚本
 # 用法: ./deploy.sh [environment]
-# 环境: production, github, development
+# 环境: production, github, development, all
 
 set -e
 
 ENV=${1:-production}
 BUILD_DIR="dist"
+
+# 自动加载部署配置文件
+DEPLOY_CONFIG_FILE="$(dirname "$0")/.deploy.env"
+if [ -f "$DEPLOY_CONFIG_FILE" ]; then
+    export $(grep -v '^#' "$DEPLOY_CONFIG_FILE" | xargs) 2>/dev/null || true
+fi
 
 # 颜色输出
 RED='\033[0;31m'
