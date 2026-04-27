@@ -6,25 +6,38 @@ import { SITE } from '../../config';
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
 const currentPath = Astro.url.pathname;
+const isHome = currentPath === base;
 ---
 
-<header class="z-40">
-  <nav class="px-8 py-6 w-full flex items-center justify-between box-border">
-    <div class="w-6" />
-    <div class="flex items-center gap-4">
-      <a href={base} class="opacity-60 hover:opacity-100 transition-opacity duration-200" title="Home">
-        <Icon name="home" class="text-xl" />
-      </a>
+<header class="sticky top-0 z-40 px-4 pt-4">
+  <nav class="mx-auto flex w-full max-w-5xl items-center justify-between rounded-full border border-black/8 bg-white/72 px-4 py-3 shadow-[0_12px_40px_rgba(15,23,42,0.08)] backdrop-blur-xl dark:border-white/10 dark:bg-black/45 dark:shadow-[0_12px_40px_rgba(0,0,0,0.28)]">
+    <a href={base} class="flex items-center gap-3 no-underline! opacity-100" title="Home">
+      <span class:list={[
+        'flex h-10 w-10 items-center justify-center rounded-full border transition-all duration-300',
+        isHome
+          ? 'border-blue-500/40 bg-blue-500/12 text-blue-600 dark:text-blue-300'
+          : 'border-black/8 bg-white/80 text-black/70 hover:border-blue-500/30 hover:text-blue-600 dark:border-white/10 dark:bg-white/5 dark:text-white/70 dark:hover:text-blue-300',
+      ]}>
+        <Icon name="home" class="text-lg" />
+      </span>
+      <div class="hidden sm:block leading-tight">
+        <div class="text-[0.7rem] font-mono tracking-[0.24em] opacity-40">VINCENT HU</div>
+        <div class="text-sm font-semibold opacity-75">Builds for the web</div>
+      </div>
+    </a>
+    <div class="flex items-center gap-2 rounded-full border border-black/6 bg-black/[0.03] px-2 py-1 dark:border-white/8 dark:bg-white/[0.04]">
       {SITE.nav.map((item) => (
         <a
           href={item.path}
           class:list={[
-            'no-underline! transition-opacity duration-200',
-            currentPath.includes(item.path) ? 'opacity-100!' : 'opacity-60 hover:opacity-100',
+            'flex h-10 w-10 items-center justify-center rounded-full no-underline! transition-all duration-300',
+            currentPath.startsWith(item.path)
+              ? 'bg-blue-500/14 text-blue-600 shadow-[0_6px_20px_rgba(59,130,246,0.18)] dark:text-blue-300'
+              : 'text-black/55 hover:bg-blue-500/10 hover:text-blue-600 dark:text-white/55 dark:hover:text-blue-300',
           ]}
           title={item.name}
         >
-          <Icon name={item.icon} class="text-xl" />
+          <Icon name={item.icon} class="text-lg" />
         </a>
       ))}
       {SITE.social.map((item) => (
@@ -33,9 +46,9 @@ const currentPath = Astro.url.pathname;
           target="_blank"
           rel="noopener noreferrer"
           title={item.name}
-          class="opacity-60 hover:opacity-100 transition-opacity duration-200"
+          class="flex h-10 w-10 items-center justify-center rounded-full text-black/55 transition-all duration-300 hover:bg-white/80 hover:text-black dark:text-white/55 dark:hover:bg-white/10 dark:hover:text-white"
         >
-          <Icon name={item.icon.toLowerCase()} class="text-xl" />
+          <Icon name={item.icon.toLowerCase()} class="text-lg" />
         </a>
       ))}
     </div>
