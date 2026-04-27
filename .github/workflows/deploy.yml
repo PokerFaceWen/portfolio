@@ -1,9 +1,19 @@
-name: Deploy to GitHub Pages
+name: Deploy to Multiple Environments
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      environment:
+        description: '选择部署环境'
+        required: true
+        default: 'github'
+        type: choice
+        options:
+          - github
+          - production
+          - all
 
 permissions:
   contents: read
@@ -17,6 +27,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      build-artifact: ${{ steps.build.outputs.artifact-path }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,22 +41,64 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
-        run: npm run build
+      - name: Build for GitHub Pages
+        id: build
+        run: |
+          npm run build:github
+          echo "artifact-path=dist" >> $GITHUB_OUTPUT
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
-  deploy:
+  deploy-github:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     needs: build
+    if: github.event.inputs.environment == 'github' || github.event.inputs.environment == 'all' || github.event_name == 'push'
     runs-on: ubuntu-latest
-    name: Deploy
+    name: Deploy to GitHub Pages
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  deploy-production:
+    needs: build
+    if: github.event.inputs.environment == 'production' || github.event.inputs.environment == 'all'
+    runs-on: ubuntu-latest
+    name: Deploy to Alibaba Cloud
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build for Production
+        run: npm run build:production
+
+      - name: Deploy to Alibaba Cloud
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_SSH_KEY }}
+          SERVER_HOST: ${{ secrets.ALIYUN_SERVER_HOST }}
+          SERVER_USER: ${{ secrets.ALIYUN_SERVER_USER }}
+          DEPLOY_PATH: ${{ secrets.ALIYUN_DEPLOY_PATH }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
+          
+          # 同步文件到阿里云服务器
+          rsync -avz --delete dist/ $SERVER_USER@$SERVER_HOST:$DEPLOY_PATH/
+          
+          # 重启 Nginx（如果需要）
+          ssh $SERVER_USER@$SERVER_HOST "sudo systemctl reload nginx"

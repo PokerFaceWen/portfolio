@@ -8,6 +8,12 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "build:production": "ASTRO_ENV=production astro build",
+    "build:github": "ASTRO_ENV=github astro build",
+    "build:development": "ASTRO_ENV=development astro build",
+    "deploy:production": "./deploy.sh production",
+    "deploy:github": "./deploy.sh github",
+    "deploy:all": "./deploy.sh production && ./deploy.sh github",
     "preview": "astro preview",
     "astro": "astro"
   },
