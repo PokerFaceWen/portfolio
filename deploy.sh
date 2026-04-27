@@ -50,8 +50,12 @@ case "$ENV" in
         export ASTRO_ENV=development
         REMOTE_PATH="dist"
         ;;
+    "all")
+        log "三端同步部署模式"
+        info "将依次部署到：1. GitHub Pages  2. 阿里云生产环境"
+        ;;
     *)
-        error "未知环境: $ENV，支持的环境: production, github, development"
+        error "未知环境: $ENV，支持的环境: production, github, development, all"
         ;;
 esac
 
@@ -132,6 +136,53 @@ case "$ENV" in
     "development")
         # 本地开发环境
         log "本地构建完成，可运行: npm run preview 预览"
+        ;;
+    
+    "all")
+        # 三端同步部署
+        log "=== 第一阶段：部署到 GitHub Pages ==="
+        bash "$0" github
+        
+        if [ $? -eq 0 ]; then
+            log "GitHub Pages 部署指令已触发"
+        else
+            error "GitHub Pages 部署失败"
+        fi
+        
+        echo ""
+        log "=== 第二阶段：部署到阿里云生产环境 ==="
+        
+        # 检查SSH配置
+        if [ -z "$ALIYUN_SERVER_HOST" ] || [ -z "$ALIYUN_SERVER_USER" ]; then
+            warn "阿里云服务器SSH配置未设置，跳过阿里云部署"
+            info "请配置环境变量：ALIYUN_SERVER_HOST, ALIYUN_SERVER_USER"
+            info "跳过阿里云部署，三端同步完成（部分成功）"
+            exit 0
+        fi
+        
+        # 执行阿里云部署
+        export ASTRO_ENV=production
+        log "开始构建生产环境..."
+        npm run build
+        
+        if [ $? -ne 0 ]; then
+            error "构建失败，三端同步部署中止"
+        fi
+        
+        log "同步文件到阿里云服务器..."
+        scp -r -o StrictHostKeyChecking=no "$BUILD_DIR/"* "$ALIYUN_SERVER_USER@$ALIYUN_SERVER_HOST:$REMOTE_PATH/"
+        
+        if [ $? -eq 0 ]; then
+            log "阿里云部署完成"
+            ssh -o StrictHostKeyChecking=no "$ALIYUN_SERVER_USER@$ALIYUN_SERVER_HOST" "sudo systemctl reload nginx" 2>/dev/null || warn "Nginx重启失败，请手动重启"
+            log "Nginx服务已重新加载"
+        else
+            error "阿里云部署失败"
+        fi
+        
+        log "=== 三端同步部署完成 ==="
+        info "GitHub Pages: https://pokerfacewen.github.io/portfolio/"
+        info "阿里云生产: https://vincentbuilds.fun"
         ;;
 esac
 

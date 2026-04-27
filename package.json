@@ -13,7 +13,7 @@
     "build:development": "ASTRO_ENV=development astro build",
     "deploy:production": "./deploy.sh production",
     "deploy:github": "./deploy.sh github",
-    "deploy:all": "./deploy.sh production && ./deploy.sh github",
+    "deploy:all": "./deploy.sh all",
     "preview": "astro preview",
     "astro": "astro"
   },
