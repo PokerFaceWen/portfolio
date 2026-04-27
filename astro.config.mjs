@@ -7,6 +7,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://vincentbuilds.fun',
+  base: '/portfolio',
   output: 'static',
   devToolbar: { enabled: false },
   integrations: [
