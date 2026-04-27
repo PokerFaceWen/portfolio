@@ -44,8 +44,7 @@ const photos = Object.entries(photoModules)
             type="button"
             class="group photo-tile relative aspect-square overflow-hidden rounded-[1.4rem] border border-black/8 bg-gray-100 text-left shadow-[0_16px_40px_rgba(15,23,42,0.08)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(15,23,42,0.14)] dark:border-white/10 dark:bg-gray-900 dark:shadow-[0_16px_40px_rgba(0,0,0,0.26)]"
             data-photo-src={photo.src}
-            data-photo-name={photo.name}
-            aria-label={`Open photo ${photo.name}`}
+            aria-label="Open photo preview"
           >
             <img
               src={photo.src}
@@ -54,8 +53,7 @@ const photos = Object.entries(photoModules)
               class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
             <div class="absolute inset-0 bg-linear-to-t from-black/45 via-black/0 to-transparent opacity-80" />
-            <div class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4">
-              <span class="max-w-[80%] text-sm font-medium text-white/88">{photo.name}</span>
+            <div class="absolute inset-x-0 bottom-0 flex items-end justify-end gap-3 p-4">
               <span class="rounded-full border border-white/20 bg-white/10 px-2 py-1 text-[0.65rem] font-mono tracking-[0.18em] text-white/70">VIEW</span>
             </div>
           </button>
@@ -68,8 +66,7 @@ const photos = Object.entries(photoModules)
     <button type="button" id="photo-lightbox-close" class="absolute inset-0 cursor-default" aria-label="Close photo preview"></button>
     <div class="relative z-10 w-full max-w-5xl scale-[0.96] transition-transform duration-300">
       <img id="photo-lightbox-image" src="" alt="" class="max-h-[78vh] w-full rounded-[1.6rem] object-contain bg-black/40 shadow-[0_30px_120px_rgba(0,0,0,0.45)]" />
-      <div class="mt-4 flex items-center justify-between gap-4 text-white">
-        <p id="photo-lightbox-caption" class="text-sm font-mono tracking-[0.16em] text-white/78"></p>
+      <div class="mt-4 flex justify-end text-white">
         <button type="button" id="photo-lightbox-action" class="rounded-full border border-white/16 bg-white/8 px-4 py-2 text-sm text-white/86 transition hover:bg-white/14">
           Close
         </button>
@@ -80,7 +77,6 @@ const photos = Object.entries(photoModules)
   <script is:inline>
     const overlay = document.getElementById('photo-lightbox');
     const overlayImage = document.getElementById('photo-lightbox-image');
-    const overlayCaption = document.getElementById('photo-lightbox-caption');
     const overlayClose = document.getElementById('photo-lightbox-close');
     const overlayAction = document.getElementById('photo-lightbox-action');
     const photoTiles = document.querySelectorAll('.photo-tile');
@@ -92,11 +88,10 @@ const photos = Object.entries(photoModules)
       document.body.classList.remove('overflow-hidden');
     };
 
-    const openLightbox = (src, name) => {
-      if (!overlay || !overlayImage || !overlayCaption) return;
+    const openLightbox = (src) => {
+      if (!overlay || !overlayImage) return;
       overlayImage.setAttribute('src', src);
-      overlayImage.setAttribute('alt', name);
-      overlayCaption.textContent = name;
+      overlayImage.setAttribute('alt', 'Photo preview');
       overlay.classList.remove('pointer-events-none', 'opacity-0', 'bg-black/0');
       overlay.classList.add('opacity-100', 'bg-black/75');
       document.body.classList.add('overflow-hidden');
@@ -105,8 +100,7 @@ const photos = Object.entries(photoModules)
     photoTiles.forEach((tile) => {
       tile.addEventListener('click', () => {
         const src = tile.getAttribute('data-photo-src');
-        const name = tile.getAttribute('data-photo-name') || 'Photo';
-        if (src) openLightbox(src, name);
+        if (src) openLightbox(src);
       });
     });
 
