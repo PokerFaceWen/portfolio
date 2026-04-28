@@ -1,43 +1,66 @@
-# Astro Starter Kit: Minimal
+# Vincent Hu
 
-```sh
-npm create astro@latest -- --template minimal
+Personal website built with **Astro**, **React**, **Tailwind CSS**, and **MDX**.
+
+- 🏠 **Production**: [vincentbuilds.fun](https://vincentbuilds.fun)
+- 📦 **GitHub Pages**: [pokerfacewen.github.io/portfolio](https://pokerfacewen.github.io/portfolio)
+
+## Tech Stack
+
+| Category | Technology |
+|----------|-----------|
+| Framework | [Astro 6.x](https://astro.build) |
+| UI Components | [React 19](https://react.dev) |
+| Styling | [Tailwind CSS 4.x](https://tailwindcss.com) |
+| Content | MDX |
+| Sitemap | [@astrojs/sitemap](https://docs.astro.build/en/guides/integrations-guide/sitemap/) |
+| Deployment | Nginx + GitHub Pages + GitHub Actions |
+
+## Project Structure
+
 ```
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
+WebPage/
+├── public/             # Static assets (photos, favicon)
 ├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── components/     # Reusable components
+│   │   ├── icons/      # SVG icon components
+│   │   ├── layout/     # Header, Footer, BackToTop
+│   │   ├── blog/       # Blog list & item components
+│   │   ├── projects/   # Project card & list components
+│   │   └── ui/         # SEO, ThemeToggle
+│   ├── content/        # Content collections
+│   │   ├── blog/       # Blog posts (Markdown)
+│   │   └── projects/   # Project pages (MDX)
+│   ├── layouts/        # Page layouts
+│   ├── pages/          # Routes (index, about, blog, projects, photos)
+│   ├── styles/         # Global CSS
+│   └── config.ts       # Site configuration
+├── .github/workflows/  # CI/CD (GitHub Actions)
+├── astro.config.ts     # Astro configuration
+├── deploy.sh           # Multi-environment deploy script
+└── deploy.env          # Alibaba Cloud deploy config (gitignored)
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Commands
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start local dev server |
+| `npm run build` | Build for production |
+| `npm run preview` | Preview the build |
+| `npm run deploy:github` | Deploy to GitHub Pages |
+| `npm run deploy:production` | Deploy to Alibaba Cloud server |
+| `npm run deploy:all` | Deploy to all environments |
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Deployment
 
-## 🧞 Commands
+This project supports three-environment deployment:
 
-All commands are run from the root of the project, from a terminal:
+| Environment | URL | Trigger |
+|-------------|-----|---------|
+| **Local** | `http://localhost:4321` | `npm run dev` |
+| **GitHub Pages** | `https://pokerfacewen.github.io/portfolio` | `npm run deploy:github` or git push |
+| **Alibaba Cloud** | `https://vincentbuilds.fun` | `npm run deploy:production` |
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+For detailed deployment instructions, see [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md).
+For site operations guide, see [OPERATIONS_GUIDE.md](./OPERATIONS_GUIDE.md).

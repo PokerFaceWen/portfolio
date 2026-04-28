@@ -251,10 +251,10 @@ git push origin main
 npm run build
 
 # 上传到服务器
-scp -r dist/* root@47.106.38.219:/var/www/vincentbuilds/
+scp -r dist/* root@your-server-ip:/var/www/vincentbuilds/
 
 # 或使用 rsync（更高效）
-rsync -avz --delete dist/ root@47.106.38.219:/var/www/vincentbuilds/
+rsync -avz --delete dist/ root@your-server-ip:/var/www/vincentbuilds/
 ```
 
 访问：https://vincentbuilds.fun
@@ -267,7 +267,7 @@ gh run list --workflow="deploy.yml" -R PokerFaceWen/portfolio
 gh run view <run-id> -R PokerFaceWen/portfolio
 
 # 检查服务器 Nginx 状态
-ssh root@47.106.38.219 'systemctl status nginx'
+ssh root@your-server-ip 'systemctl status nginx'
 ```
 
 ## 五、服务器管理
@@ -275,7 +275,7 @@ ssh root@47.106.38.219 'systemctl status nginx'
 ### SSH 登录
 
 ```bash
-ssh root@47.106.38.219
+ssh root@your-server-ip
 ```
 
 ### Nginx 常用命令
@@ -405,8 +405,8 @@ systemctl restart sshd
 - **域名**：vincentbuilds.fun
 - **注册商**：阿里云
 - **DNS 解析**：
-  - A 记录：@ → 47.106.38.219
-  - A 记录：www → 47.106.38.219
+  - A 记录：@ → your-server-ip
+  - A 记录：www → your-server-ip
 
 ### 域名解析设置
 
@@ -414,8 +414,8 @@ systemctl restart sshd
 
 | 记录类型 | 主机记录 | 记录值 | TTL |
 |---------|---------|--------|-----|
-| A | @ | 47.106.38.219 | 10分钟 |
-| A | www | 47.106.38.219 | 10分钟 |
+| A | @ | your-server-ip | 10分钟 |
+| A | www | your-server-ip | 10分钟 |
 
 ## 九、故障排查
 
@@ -438,16 +438,16 @@ gh run view <run-id> --log-failed -R PokerFaceWen/portfolio
 
 ```bash
 # 1. 检查 Nginx 是否运行
-ssh root@47.106.38.219 'systemctl status nginx'
+ssh root@your-server-ip 'systemctl status nginx'
 
 # 2. 检查端口是否监听
-ssh root@47.106.38.219 'ss -tlnp | grep -E "80|443"'
+ssh root@your-server-ip 'ss -tlnp | grep -E "80|443"'
 
 # 3. 检查 Nginx 配置
-ssh root@47.106.38.219 'nginx -t'
+ssh root@your-server-ip 'nginx -t'
 
 # 4. 查看 Nginx 错误日志
-ssh root@47.106.38.219 'tail -50 /var/log/nginx/error.log'
+ssh root@your-server-ip 'tail -50 /var/log/nginx/error.log'
 
 # 5. 检查防火墙
 # 阿里云控制台 → 服务器 → 安全 → 防火墙 → 确认 80/443 端口已开放

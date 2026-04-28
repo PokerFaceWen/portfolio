@@ -71,18 +71,29 @@ GitHub Actions 支持以下部署方式：
 
 ## ⚙️ 环境配置
 
-### 阿里云服务器配置
+### 本地部署配置（.deploy.env）
 
-需要在 GitHub Secrets 中配置以下环境变量：
+本地一键部署需要在项目根目录创建 `.deploy.env` 配置文件：
+
+```bash
+# 阿里云部署配置
+ALIYUN_SERVER_HOST=your-server-ip
+ALIYUN_SERVER_USER=root
+ALIYUN_DEPLOY_PATH=/var/www/vincentbuilds
+```
+
+> ⚠️ `.deploy.env` 已加入 `.gitignore`，不会被提交到 GitHub。
+
+### 阿里云服务器配置
 
 | Secret 名称 | 描述 | 示例值 |
 |-------------|------|--------|
 | `ALIYUN_SSH_KEY` | 阿里云服务器 SSH 私钥 | `-----BEGIN RSA PRIVATE KEY-----...` |
-| `ALIYUN_SERVER_HOST` | 服务器 IP 地址 | `123.123.123.123` |
+| `ALIYUN_SERVER_HOST` | 服务器 IP 地址 | `<your-server-ip>` |
 | `ALIYUN_SERVER_USER` | 服务器用户名 | `root` |
-| `ALIYUN_DEPLOY_PATH` | 部署目录路径 | `/www/wwwroot/vincentbuilds.fun` |
+| `ALIYUN_DEPLOY_PATH` | 部署目录路径 | `/var/www/vincentbuilds` |
 
-### 配置 GitHub Secrets
+### 配置 GitHub Secrets（可选，用于 CI/CD 自动部署）
 
 1. 进入 GitHub 仓库设置
 2. 选择 **Secrets and variables** > **Actions**
@@ -174,4 +185,4 @@ const environments = {
 
 ---
 
-**最后更新：2026-04-24**
+**最后更新：2026-04-28**
