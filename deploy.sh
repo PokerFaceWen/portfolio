@@ -113,8 +113,8 @@ case "$ENV" in
             SSH_OPTIONS=""
         fi
         
-        # 执行scp同步
-        scp -r -o StrictHostKeyChecking=no "$BUILD_DIR/"* "$ALIYUN_SERVER_USER@$ALIYUN_SERVER_HOST:$REMOTE_PATH/"
+        # 使用tar管道同步（比scp -r更可靠，确保所有子目录完整传输）
+        tar czf - -C "$BUILD_DIR" . | ssh -o StrictHostKeyChecking=no "$ALIYUN_SERVER_USER@$ALIYUN_SERVER_HOST" "cd $REMOTE_PATH && tar xzf -"
         
         if [ $? -eq 0 ]; then
             log "阿里云部署完成"
@@ -176,7 +176,7 @@ case "$ENV" in
         fi
         
         log "同步文件到阿里云服务器..."
-        scp -r -o StrictHostKeyChecking=no "$BUILD_DIR/"* "$ALIYUN_SERVER_USER@$ALIYUN_SERVER_HOST:$REMOTE_PATH/"
+        tar czf - -C "$BUILD_DIR" . | ssh -o StrictHostKeyChecking=no "$ALIYUN_SERVER_USER@$ALIYUN_SERVER_HOST" "cd $REMOTE_PATH && tar xzf -"
         
         if [ $? -eq 0 ]; then
             log "阿里云部署完成"
