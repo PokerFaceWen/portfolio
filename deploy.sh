@@ -113,9 +113,8 @@ case "$ENV" in
             SSH_OPTIONS=""
         fi
         
-        # 使用tar管道同步（--no-xattrs避免macOS扩展属性警告）
-        # 通过sudo解压以写入目标目录（admin用户无直接写权限）
-        tar czf - --no-xattrs -C "$BUILD_DIR" . | ssh -o StrictHostKeyChecking=no "$ALIYUN_SERVER_USER@$ALIYUN_SERVER_HOST" "sudo tar xzf - -C $REMOTE_PATH"
+        # 使用tar管道同步
+        tar czf - --no-xattrs -C "$BUILD_DIR" . | ssh -o StrictHostKeyChecking=no "$ALIYUN_SERVER_USER@$ALIYUN_SERVER_HOST" "tar xzf - -C $REMOTE_PATH"
         
         if [ $? -eq 0 ]; then
             log "阿里云部署完成"
