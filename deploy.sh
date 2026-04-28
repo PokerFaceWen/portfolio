@@ -114,7 +114,8 @@ case "$ENV" in
         fi
         
         # 使用tar管道同步（--no-xattrs避免macOS扩展属性警告）
-        tar czf - --no-xattrs -C "$BUILD_DIR" . | ssh -o StrictHostKeyChecking=no "$ALIYUN_SERVER_USER@$ALIYUN_SERVER_HOST" "cd $REMOTE_PATH && tar xzf -"
+        # 通过sudo解压以写入目标目录（admin用户无直接写权限）
+        tar czf - --no-xattrs -C "$BUILD_DIR" . | ssh -o StrictHostKeyChecking=no "$ALIYUN_SERVER_USER@$ALIYUN_SERVER_HOST" "sudo tar xzf - -C $REMOTE_PATH"
         
         if [ $? -eq 0 ]; then
             log "阿里云部署完成"
@@ -158,32 +159,17 @@ case "$ENV" in
         echo ""
         log "=== 第二阶段：部署到阿里云生产环境 ==="
         
-        # 检查SSH配置
         if [ -z "$ALIYUN_SERVER_HOST" ] || [ -z "$ALIYUN_SERVER_USER" ]; then
             warn "阿里云服务器SSH配置未设置，跳过阿里云部署"
-            info "请配置环境变量：ALIYUN_SERVER_HOST, ALIYUN_SERVER_USER"
+            info "请检查 .deploy.env 文件中的 ALIYUN_SERVER_HOST 和 ALIYUN_SERVER_USER"
             info "跳过阿里云部署，三端同步完成（部分成功）"
-            exit 0
-        fi
-        
-        # 执行阿里云部署
-        export ASTRO_ENV=production
-        log "开始构建生产环境..."
-        npm run build
-        
-        if [ $? -ne 0 ]; then
-            error "构建失败，三端同步部署中止"
-        fi
-        
-        log "同步文件到阿里云服务器..."
-        tar czf - --no-xattrs -C "$BUILD_DIR" . | ssh -o StrictHostKeyChecking=no "$ALIYUN_SERVER_USER@$ALIYUN_SERVER_HOST" "cd $REMOTE_PATH && tar xzf -"
-        
-        if [ $? -eq 0 ]; then
-            log "阿里云部署完成"
-            ssh -o StrictHostKeyChecking=no "$ALIYUN_SERVER_USER@$ALIYUN_SERVER_HOST" "sudo systemctl reload nginx" 2>/dev/null || warn "Nginx重启失败，请手动重启"
-            log "Nginx服务已重新加载"
         else
-            error "阿里云部署失败"
+            bash "$0" production
+            if [ $? -eq 0 ]; then
+                log "阿里云部署完成 ✅"
+            else
+                warn "阿里云部署失败 ⚠️"
+            fi
         fi
         
         log "=== 三端同步部署完成 ==="
