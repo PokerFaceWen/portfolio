@@ -1,7 +1,7 @@
 ---
 title: "RAG 学习笔记：向量嵌入技术详解"
 description: "深入理解向量嵌入在 RAG 系统中的核心作用，从基础概念到技术演进，掌握 Embedding 的核心原理与实践应用"
-pubDate: 2026-04-25
+pubDate: 2025-08-01
 tags: ["RAG", "Embedding", "向量检索", "NLP"]
 lang: "zh"
 ---

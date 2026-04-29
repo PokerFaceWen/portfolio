@@ -1,7 +1,7 @@
 ---
 title: "个人网站运维指南：从开发到部署的完整流程"
 description: "详细的个人网站运维指南，包含本地开发、双线路部署、服务器管理、安全维护以及 uv 虚拟环境操作命令。"
-pubDate: 2026-04-27
+pubDate: 2025-09-15
 lang: "zh"
 tags: ["网站运维", "Astro", "Nginx", "GitHub Pages", "uv"]
 ---

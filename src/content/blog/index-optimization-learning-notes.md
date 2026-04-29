@@ -1,7 +1,7 @@
 ---
 title: "RAG 学习笔记：索引优化策略与实践"
 description: "深入理解句子窗口检索和结构化索引，掌握 LlamaIndex 高性能生产级 RAG 构建方案"
-pubDate: 2026-04-25
+pubDate: 2025-09-05
 tags: ["RAG", "索引优化", "LlamaIndex", "句子窗口检索", "结构化索引"]
 lang: "zh"
 ---

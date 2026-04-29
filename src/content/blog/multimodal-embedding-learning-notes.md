@@ -1,7 +1,7 @@
 ---
 title: "RAG 学习笔记：多模态嵌入技术实战"
 description: "深入理解 CLIP 模型和 bge-visualized-m3，掌握图文多模态嵌入的核心原理与实践方法"
-pubDate: 2026-04-25
+pubDate: 2025-08-28
 tags: ["RAG", "多模态", "CLIP", "BGE", "图文检索"]
 lang: "zh"
 ---

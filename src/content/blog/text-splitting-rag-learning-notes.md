@@ -1,7 +1,7 @@
 ---
 title: "RAG 学习笔记：文本分块的四种武器，哪种最锋利？"
 description: "深入学习 LangChain 中的四种文本分割器，通过实际运行对比和 LLM 分析，找出最适合你场景的分块策略。"
-pubDate: 2026-04-25
+pubDate: 2025-07-20
 tags: ["RAG", "LangChain", "文本分块", "Python", "AI"]
 lang: "zh"
 ---

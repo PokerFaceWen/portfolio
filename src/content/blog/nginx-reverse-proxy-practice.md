@@ -1,7 +1,7 @@
 ---
 title: "Nginx 反向代理：从原理到生产实践 —— 以 What-to-eat-today 项目为例"
 description: "深入理解 Nginx 反向代理的核心原理、配置技巧与生产最佳实践，结合 Datawhale all-in-rag 实战项目 What-to-eat-today 进行工程化应用分析"
-pubDate: 2026-04-28
+pubDate: 2025-09-25
 tags: ["Nginx", "反向代理", "DevOps", "Docker", "架构设计"]
 lang: "zh"
 ---

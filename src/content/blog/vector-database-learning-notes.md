@@ -1,7 +1,7 @@
 ---
 title: "RAG 学习笔记：向量数据库核心原理与实践"
 description: "深入理解向量数据库在 RAG 系统中的关键作用，掌握主流向量数据库的选型与 FAISS 实践"
-pubDate: 2026-04-25
+pubDate: 2025-08-10
 tags: ["RAG", "向量数据库", "FAISS", "Milvus", "相似性搜索"]
 lang: "zh"
 ---

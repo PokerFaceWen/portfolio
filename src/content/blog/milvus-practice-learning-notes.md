@@ -1,7 +1,7 @@
 ---
 title: "RAG 学习笔记：Milvus 多模态检索实战"
 description: "从零开始掌握 Milvus 向量数据库的部署、核心组件和多模态检索实践，构建生产级向量检索系统"
-pubDate: 2026-04-25
+pubDate: 2025-08-20
 tags: ["RAG", "Milvus", "向量数据库", "多模态检索", "Docker"]
 lang: "zh"
 ---
